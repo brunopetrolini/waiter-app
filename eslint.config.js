@@ -23,6 +23,7 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
+      '@typescript-eslint/no-require-imports': 'off',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   }
