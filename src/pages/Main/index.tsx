@@ -9,13 +9,14 @@ import { CategoriesContainer, Container, Footer, FooterContainer, MenuContainer 
 
 export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
+  const [selectedTable, setSelectedTable] = useState('');
 
   function handleToggleTableModal() {
     setIsTableModalVisible(!isTableModalVisible);
   }
 
   function handleSaveTable(table: string) {
-    alert(table);
+    setSelectedTable(table);
   }
 
   return (
@@ -34,7 +35,7 @@ export function Main() {
 
       <Footer>
         <FooterContainer>
-          <Button onPress={handleToggleTableModal}>Novo Pedido</Button>
+          {!selectedTable && <Button onPress={handleToggleTableModal}>Novo Pedido</Button>}
         </FooterContainer>
       </Footer>
 

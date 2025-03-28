@@ -15,6 +15,11 @@ interface TableModalProps {
 export function TableModal({ visible, onClose, onSave }: TableModalProps) {
   const [table, setTable] = useState('');
 
+  function handleSave() {
+    onSave(table);
+    onClose();
+  }
+
   return (
     <Modal statusBarTranslucent transparent visible={visible} animationType="fade">
       <Overlay behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
@@ -34,7 +39,7 @@ export function TableModal({ visible, onClose, onSave }: TableModalProps) {
               onChangeText={setTable}
               value={table}
             />
-            <Button onPress={() => onSave(table)} disabled={!table.length}>
+            <Button onPress={handleSave} disabled={!table.length}>
               Salvar
             </Button>
           </ModalForm>
