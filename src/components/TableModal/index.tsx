@@ -9,11 +9,11 @@ import { Input, ModalBody, ModalForm, ModalHeader, Overlay } from './styles';
 interface TableModalProps {
   visible: boolean;
   onClose: () => void;
-  onSave: (table: number) => void;
+  onSave: (table: string) => void;
 }
 
 export function TableModal({ visible, onClose, onSave }: TableModalProps) {
-  const [table, setTable] = useState(0);
+  const [table, setTable] = useState('');
 
   return (
     <Modal statusBarTranslucent transparent visible={visible} animationType="fade">
@@ -34,7 +34,7 @@ export function TableModal({ visible, onClose, onSave }: TableModalProps) {
               onChangeText={setTable}
               value={table}
             />
-            <Button onPress={() => onSave(table)} disabled={!table}>
+            <Button onPress={() => onSave(table)} disabled={!table.length}>
               Salvar
             </Button>
           </ModalForm>

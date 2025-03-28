@@ -14,7 +14,7 @@ export function Main() {
     setIsTableModalVisible(!isTableModalVisible);
   }
 
-  function handleSaveTable(table: number) {
+  function handleSaveTable(table: string) {
     alert(table);
   }
 
