@@ -12,6 +12,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@babel/runtime": "^7.27.0",
     "expo": "~52.0.40",
     "expo-font": "~13.0.4",
     "expo-status-bar": "~2.0.1",
