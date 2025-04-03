@@ -14,7 +14,7 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style="dark" animated translucent />
+      <StatusBar style="auto" animated translucent />
       <Main />
     </>
   );
