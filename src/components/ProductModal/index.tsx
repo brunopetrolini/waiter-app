@@ -2,9 +2,21 @@ import React from 'react';
 import { FlatList, Modal } from 'react-native';
 
 import type { Product } from '../../types/product';
+import { formatCurrency } from '../../utils/format-currency';
+import { Button } from '../Button';
 import { Close } from '../Icons/Close';
 import { Text } from '../Text';
-import { CloseButton, Header, Image, Ingredient, IngredientsContainer, ModalBody } from './styles';
+import {
+  CloseButton,
+  Footer,
+  FooterContainer,
+  Header,
+  Image,
+  Ingredient,
+  IngredientsContainer,
+  ModalBody,
+  PriceContainer,
+} from './styles';
 
 interface ProductModalProps {
   visible: boolean;
@@ -33,27 +45,42 @@ export function ProductModal({ visible, onClose, product }: ProductModalProps) {
           </Text>
         </Header>
 
-        <IngredientsContainer>
-          <Text weight="600" color="#666">
-            Ingredientes
-          </Text>
+        {product.ingredients.length > 0 && (
+          <IngredientsContainer>
+            <Text weight="600" color="#666">
+              Ingredientes
+            </Text>
 
-          <FlatList
-            style={{ marginTop: 16 }}
-            data={product.ingredients}
-            keyExtractor={(ingredient) => ingredient._id}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <Ingredient>
-                <Text style={{ marginBottom: 8 }}>{item.icon}</Text>
-                <Text size={14} color="#666">
-                  {item.name}
-                </Text>
-              </Ingredient>
-            )}
-          />
-        </IngredientsContainer>
+            <FlatList
+              style={{ marginTop: 16 }}
+              data={product.ingredients}
+              keyExtractor={(ingredient) => ingredient._id}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <Ingredient>
+                  <Text style={{ marginBottom: 8 }}>{item.icon}</Text>
+                  <Text size={14} color="#666">
+                    {item.name}
+                  </Text>
+                </Ingredient>
+              )}
+            />
+          </IngredientsContainer>
+        )}
       </ModalBody>
+
+      <Footer>
+        <FooterContainer>
+          <PriceContainer>
+            <Text color="#666">Preço</Text>
+            <Text size={20} weight="600">
+              {formatCurrency(product.price)}
+            </Text>
+          </PriceContainer>
+
+          <Button onPress={() => {}}>Adicionar ao pedido</Button>
+        </FooterContainer>
+      </Footer>
     </Modal>
   );
 }
