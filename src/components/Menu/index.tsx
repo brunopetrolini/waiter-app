@@ -9,7 +9,11 @@ import { ProductModal } from '../ProductModal';
 import { Text } from '../Text';
 import { AddToCartButton, ProductContainer, ProductDetails, ProductImage, Separator } from './styles';
 
-export function Menu() {
+interface MenuProps {
+  onAddItemToCart: (product: Product) => void;
+}
+
+export function Menu({ onAddItemToCart }: MenuProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
@@ -42,7 +46,7 @@ export function Menu() {
               </Text>
             </ProductDetails>
 
-            <AddToCartButton>
+            <AddToCartButton onPress={() => onAddItemToCart(product)}>
               <PlusCircle />
             </AddToCartButton>
           </ProductContainer>
