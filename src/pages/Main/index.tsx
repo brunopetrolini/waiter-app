@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { products } from '../../../mocks/products';
 import { Button } from '../../components/Button';
 import { Cart } from '../../components/Cart';
 import { Categories } from '../../components/Categories';
@@ -15,8 +14,8 @@ export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
   const [cartItems] = useState<CartItem[]>([
-    { product: products[0], quantity: 1 },
-    { product: products[1], quantity: 4 },
+    // { product: products[0], quantity: 1 },
+    // { product: products[1], quantity: 4 },
   ]);
 
   function handleToggleTableModal() {
