@@ -13,10 +13,7 @@ import { CategoriesContainer, Container, Footer, FooterContainer, MenuContainer 
 export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
-  const [cartItems] = useState<CartItem[]>([
-    // { product: products[0], quantity: 1 },
-    // { product: products[1], quantity: 4 },
-  ]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   function handleToggleTableModal() {
     setIsTableModalVisible(!isTableModalVisible);
@@ -28,11 +25,36 @@ export function Main() {
 
   function handleCancelOrder() {
     setSelectedTable('');
+    setCartItems([]);
   }
 
   function handleAddItemToCart(product: Product) {
-    // TODO: adds item to cart
-    console.log(product);
+    if (!selectedTable) {
+      setIsTableModalVisible(true);
+    }
+    setCartItems((prevState) => {
+      const itemIndex = prevState.findIndex((cartItem) => cartItem.product._id === product._id);
+      if (itemIndex > -1) {
+        const newCartItems = [...prevState];
+        newCartItems[itemIndex].quantity += 1;
+        return newCartItems;
+      }
+      return [...prevState, { quantity: 1, product }];
+    });
+  }
+
+  function handleDecrementCartItem(product: Product) {
+    setCartItems((prevState) => {
+      const newCartItems = [...prevState];
+      const itemIndex = newCartItems.findIndex((cartItem) => cartItem.product._id === product._id);
+      const item = newCartItems[itemIndex];
+      if (item.quantity > 1) {
+        newCartItems[itemIndex].quantity -= 1;
+        return newCartItems;
+      }
+      newCartItems.splice(itemIndex, 1);
+      return newCartItems;
+    });
   }
 
   return (
@@ -52,7 +74,9 @@ export function Main() {
       <Footer>
         <FooterContainer>
           {!selectedTable && <Button onPress={handleToggleTableModal}>Novo Pedido</Button>}
-          {selectedTable && <Cart items={cartItems} />}
+          {selectedTable && (
+            <Cart items={cartItems} onAdd={handleAddItemToCart} onDecrement={handleDecrementCartItem} />
+          )}
         </FooterContainer>
       </Footer>
 

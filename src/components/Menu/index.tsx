@@ -24,7 +24,12 @@ export function Menu({ onAddItemToCart }: MenuProps) {
 
   return (
     <>
-      <ProductModal product={selectedProduct} onClose={() => setIsModalVisible(false)} visible={isModalVisible} />
+      <ProductModal
+        product={selectedProduct}
+        onClose={() => setIsModalVisible(false)}
+        visible={isModalVisible}
+        onAddToCart={onAddItemToCart}
+      />
 
       <FlatList
         data={products}
