@@ -1,19 +1,25 @@
 import { useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 
+// import { products as mockProducts } from '../../../mocks/products';
 import { Button } from '../../components/Button';
 import { Cart } from '../../components/Cart';
 import { Categories } from '../../components/Categories';
 import { Header } from '../../components/Header';
+import { Empty } from '../../components/Icons/Empty';
 import { Menu } from '../../components/Menu';
 import { TableModal } from '../../components/TableModal';
+import { Text } from '../../components/Text';
 import { CartItem } from '../../types/cart-item';
 import { Product } from '../../types/product';
-import { CategoriesContainer, Container, Footer, FooterContainer, MenuContainer } from './styles';
+import { CategoriesContainer, CenteredContainer, Container, Footer, FooterContainer, MenuContainer } from './styles';
 
 export function Main() {
   const [isTableModalVisible, setIsTableModalVisible] = useState(false);
   const [selectedTable, setSelectedTable] = useState('');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isLoading] = useState(false);
+  const [products] = useState<Product[]>([]);
 
   function handleToggleTableModal() {
     setIsTableModalVisible(!isTableModalVisible);
@@ -62,18 +68,42 @@ export function Main() {
       <Container>
         <Header selectedTable={selectedTable} onCancelOrder={handleResetOrder} />
 
-        <CategoriesContainer>
-          <Categories />
-        </CategoriesContainer>
+        {!isLoading && (
+          <>
+            <CategoriesContainer>
+              <Categories />
+            </CategoriesContainer>
 
-        <MenuContainer>
-          <Menu onAddItemToCart={handleAddItemToCart} />
-        </MenuContainer>
+            {products.length > 0 ? (
+              <MenuContainer>
+                <Menu onAddItemToCart={handleAddItemToCart} items={products} />
+              </MenuContainer>
+            ) : (
+              <CenteredContainer>
+                <Empty />
+                <Text color="#666" style={{ marginTop: 24 }}>
+                  Nenhum produto foi encontrado!
+                </Text>
+              </CenteredContainer>
+            )}
+          </>
+        )}
+
+        {isLoading && (
+          <CenteredContainer>
+            <ActivityIndicator size="large" color="#D73035" />
+            <Text color="#666">Aguarde um momento...</Text>
+          </CenteredContainer>
+        )}
       </Container>
 
       <Footer>
         <FooterContainer>
-          {!selectedTable && <Button onPress={handleToggleTableModal}>Novo Pedido</Button>}
+          {!selectedTable && (
+            <Button onPress={handleToggleTableModal} disabled={isLoading}>
+              Novo Pedido
+            </Button>
+          )}
           {selectedTable && (
             <Cart
               items={cartItems}

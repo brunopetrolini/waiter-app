@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { ActivityIndicator } from 'react-native';
 
 import { Text } from '../Text';
 import { Container } from './styles';
@@ -7,14 +8,19 @@ interface ButtonProps {
   children: ReactNode;
   onPress: () => void;
   disabled?: boolean;
+  loading?: boolean;
 }
 
-export function Button({ children, onPress, disabled = false }: ButtonProps) {
+export function Button({ children, onPress, disabled = false, loading = false }: ButtonProps) {
   return (
-    <Container onPress={onPress} disabled={disabled}>
-      <Text weight="600" color="#fff">
-        {children}
-      </Text>
+    <Container onPress={onPress} disabled={disabled || loading}>
+      {!loading && (
+        <Text weight="600" color="#fff">
+          {children}
+        </Text>
+      )}
+
+      {loading && <ActivityIndicator color="#fff" />}
     </Container>
   );
 }
