@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, Modal } from 'react-native';
 
 import type { Product } from '../../types/product';
+import { BASE_URL } from '../../utils/api';
 import { formatCurrency } from '../../utils/format-currency';
 import { Button } from '../Button';
 import { Close } from '../Icons/Close';
@@ -35,7 +36,7 @@ export function ProductModal({ visible, onClose, onAddToCart, product }: Product
 
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
-      <Image source={{ uri: product.imagePath }}>
+      <Image source={{ uri: `${BASE_URL}/uploads/${product.imagePath}` }}>
         <CloseButton onPress={onClose}>
           <Close />
         </CloseButton>

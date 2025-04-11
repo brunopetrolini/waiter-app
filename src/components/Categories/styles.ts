@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 
 const isAndroid = Platform.OS === 'android';
 
-export const Category = styled.Pressable`
+export const CategoryContainer = styled.Pressable`
   align-items: center;
   margin-left: 24px;
 `;

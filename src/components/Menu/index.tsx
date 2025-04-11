@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FlatList } from 'react-native';
 
 import type { Product } from '../../types/product';
+import { BASE_URL } from '../../utils/api';
 import { formatCurrency } from '../../utils/format-currency';
 import { PlusCircle } from '../Icons/PlusCircle';
 import { ProductModal } from '../ProductModal';
@@ -33,13 +34,13 @@ export function Menu({ onAddItemToCart, items }: MenuProps) {
 
       <FlatList
         data={items}
-        keyExtractor={(product) => product._id}
+        keyExtractor={(item) => item._id}
         style={{ marginTop: 32 }}
         contentContainerStyle={{ paddingHorizontal: 24 }}
         ItemSeparatorComponent={Separator}
         renderItem={({ item: product }) => (
           <ProductContainer onPress={() => handleOpenModal(product)}>
-            <ProductImage source={{ uri: product.imagePath }} />
+            <ProductImage source={{ uri: `${BASE_URL}/uploads/${product.imagePath}` }} />
             <ProductDetails>
               <Text weight="600">{product.name}</Text>
               <Text size={14} color="#666" style={{ marginVertical: 8 }}>

@@ -3,6 +3,7 @@ import { FlatList, TouchableOpacity } from 'react-native';
 
 import { CartItem } from '../../types/cart-item';
 import { Product } from '../../types/product';
+import { api, BASE_URL } from '../../utils/api';
 import { formatCurrency } from '../../utils/format-currency';
 import { Button } from '../Button';
 import { MinusCircle } from '../Icons/MinusCircle';
@@ -22,17 +23,34 @@ import {
 
 interface CartProps {
   items: CartItem[];
+  selectedTable: string;
   onAdd: (product: Product) => void;
   onDecrement: (product: Product) => void;
   onConfirmOrder: () => void;
 }
 
-export function Cart({ items, onAdd, onDecrement, onConfirmOrder }: CartProps) {
+export function Cart({ items, selectedTable, onAdd, onDecrement, onConfirmOrder }: CartProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleConfirmOrder() {
-    setIsModalVisible(true);
+  async function handleConfirmOrder() {
+    setIsLoading(true);
+    try {
+      const payload = {
+        table: selectedTable,
+        products: items.map((item) => ({
+          product: item.product._id,
+          quantity: item.quantity,
+        })),
+      };
+      await api.post('/orders', payload);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setIsModalVisible(true);
+    } catch (error) {
+      console.error('Erro ao confirmar pedido.', error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function handleOk() {
@@ -57,7 +75,7 @@ export function Cart({ items, onAdd, onDecrement, onConfirmOrder }: CartProps) {
           renderItem={({ item }) => (
             <Item>
               <ProductContainer>
-                <Image source={{ uri: item.product.imagePath }} />
+                <Image source={{ uri: `${BASE_URL}/uploads/${item.product.imagePath}` }} />
 
                 <QuantityContainer>
                   <Text size={14} color="#666">
